@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài đặt & Dữ liệu - English Language Pro</title>
+    <link rel="stylesheet" href="../../assets/css/options.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>English Language Pro</h1>
+            <p>Quản lý dữ liệu và cài đặt của bạn</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-link active" data-tab="saved-words">⭐ Từ đã lưu</button>
+            <button class="tab-link" data-tab="history">🕒 Lịch sử</button>
+        </div>
+
+        <main class="content-wrapper">
+            <section id="saved-words" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Từ vựng đã lưu</h2>
+                    </div>
+                    <div id="saved-words-list" class="data-list">
+                        <!-- Words will be injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="history" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Lịch sử tra cứu (50 từ gần nhất)</h2>
+                        <button id="clear-history-btn" class="header-btn">Xóa tất cả</button>
+                    </div>
+                    <div id="history-list" class="data-list">
+                         <!-- History will be injected by JS -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

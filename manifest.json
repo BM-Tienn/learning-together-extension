@@ -1,0 +1,49 @@
+{
+    "manifest_version": 3,
+    "name": "English Language Assistant",
+    "version": "1.0",
+    "description": "Trợ lý tiếng Anh thông minh: Dịch văn bản, hình ảnh, phân tích AI và quản lý từ vựng.",
+    "permissions": [
+        "tts",
+        "storage",
+        "activeTab",
+        "contextMenus",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://api.dictionaryapi.dev/*",
+        "https://api.mymemory.translated.net/*",
+        "https://generativelanguage.googleapis.com/*"
+    ],
+    "background": {
+        "service_worker": "src/background/index.js"
+    },
+    "action": {
+        "default_popup": "src/popup/index.html",
+        "default_title": "English Language Assistant",
+        "default_icon": {
+            "16": "assets/icons/icon16.png",
+            "48": "assets/icons/icon48.png",
+            "128": "assets/icons/icon128.png"
+        }
+    },
+    "options_page": "src/options/index.html",
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "css": [
+                "assets/css/style.css"
+            ],
+            "js": [
+                "src/content/index.js"
+            ]
+        }
+    ],
+    "icons": {
+        "16": "assets/icons/icon16.png",
+        "48": "assets/icons/icon48.png",
+        "128": "assets/icons/icon128.png"
+    }
+}

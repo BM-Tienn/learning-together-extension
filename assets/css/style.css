@@ -1,0 +1,149 @@
+/* --- Trigger Icon --- */
+#ela-trigger-icon {
+  position: absolute; z-index: 2147483646;
+  width: 28px; height: 28px;
+  background: #333; border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  opacity: 0; transform: translateY(-10px);
+  pointer-events: none;
+}
+#ela-trigger-icon.visible {
+  opacity: 1; transform: translateY(0);
+  pointer-events: all;
+}
+
+/* --- Main Popup --- */
+#ela-main-popup {
+  position: absolute; z-index: 2147483647;
+  width: 360px; background: #ffffff;
+  border-radius: 8px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #202124; font-size: 14px;
+  line-height: 1.5; display: none;
+  border: 1px solid rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.ela-loading, .ela-error {
+  padding: 20px; text-align: center; color: #5f6368;
+}
+.ela-error { color: #d93025; }
+
+/* --- Header --- */
+.ela-header {
+  display: flex; align-items: center;
+  padding: 8px; border-bottom: 1px solid #e8eaed;
+  gap: 4px;
+}
+.ela-header-main {
+  flex-grow: 1; display: flex;
+  align-items: baseline; gap: 8px;
+  overflow: hidden;
+}
+.ela-header-main .ela-word {
+  font-size: 16px; font-weight: 500;
+  white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ela-phonetic { font-size: 14px; color: #5f6368; }
+.ela-header-actions { display: flex; flex-shrink: 0; }
+
+/* --- Body --- */
+.ela-body {
+  padding: 4px 16px 12px 16px;
+  max-height: 300px; overflow-y: auto;
+}
+
+/* --- Common Elements --- */
+.ela-icon-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: #5f6368;
+  padding: 6px; border-radius: 50%;
+  line-height: 1; width: 32px; height: 32px;
+  flex-shrink: 0; transition: background-color 0.2s, color 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.ela-icon-btn:hover { background-color: #f1f3f4; }
+.ela-icon-btn.save-btn.saved svg { color: #fbbc05; }
+
+/* --- Definition View --- */
+.ela-quick-translation {
+  font-size: 16px; font-weight: 500;
+  color: #1a0dab; padding: 8px 0;
+  border-bottom: 1px solid #f1f3f4; margin-bottom: 12px;
+}
+.ela-pos {
+  font-weight: 600; font-style: italic;
+  color: #188038; margin-top: 12px; margin-bottom: 4px;
+}
+.ela-def-list {
+  list-style-type: decimal;
+  list-style-position: outside;
+  padding-left: 20px; margin: 0;
+}
+.ela-def-list li { margin-bottom: 8px; }
+
+/* --- Translation View --- */
+.ela-translation {
+  font-size: 16px; color: #1a0dab; padding: 12px 0;
+}
+
+/* --- AI Analysis View --- */
+.ela-ai-section { margin-bottom: 16px; }
+.ela-ai-section h4 {
+  font-size: 12px; font-weight: 600;
+  color: #5f6368; text-transform: uppercase;
+  margin-bottom: 8px; letter-spacing: 0.5px;
+}
+.ela-ai-section p { margin: 0; }
+.ela-tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.ela-tag {
+  background-color: #e8f0fe; color: #1967d2;
+  padding: 3px 8px; border-radius: 4px; font-size: 13px;
+}
+.ela-example-list { list-style: none; padding: 0; }
+.ela-example-list li {
+  margin-bottom: 10px;
+  padding-left: 12px;
+  border-left: 2px solid #e8eaed;
+}
+.ex-en { font-style: italic; }
+.ex-vi { font-size: 13px; color: #5f6368; }
+
+/* --- Toast Notification --- */
+.ela-toast {
+  position: absolute; bottom: 0; left: 50%;
+  transform: translate(-50%, 100%);
+  background-color: rgba(32, 33, 36, 0.9);
+  color: #fff; padding: 8px 16px;
+  border-radius: 16px; font-size: 13px;
+  z-index: 10; opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+.ela-toast.show {
+  opacity: 1; transform: translate(-50%, -10px);
+}
+
+/* --- OCR Selection Overlay --- */
+#ela-ocr-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: crosshair;
+    z-index: 2147483647;
+}
+#ela-ocr-selection {
+    position: absolute;
+    border: 2px dashed #fff;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: none;
+}
+
+/* --- Scrollbar --- */
+.ela-body::-webkit-scrollbar { width: 6px; }
+.ela-body::-webkit-scrollbar-track { background: transparent; }
+.ela-body::-webkit-scrollbar-thumb { background: #dadce0; border-radius: 3px; }

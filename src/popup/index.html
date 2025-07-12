@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>English Language Assistant</title>
+    <style>
+        body {
+            width: 220px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 8px;
+            background-color: #f8f9fa;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #202124;
+        }
+        .menu-item:hover {
+            background-color: #f1f3f4;
+        }
+        .menu-item .icon {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="translate-image-btn" class="menu-item">
+        <span class="icon">🖼️</span>
+        <span>Dịch ảnh (Chọn vùng)</span>
+    </div>
+    <div id="translate-page-btn" class="menu-item">
+        <span class="icon">🌐</span>
+        <span>Dịch trang này</span>
+    </div>
+    <div id="options-btn" class="menu-item">
+        <span class="icon">⚙️</span>
+        <span>Cài đặt & Dữ liệu</span>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
