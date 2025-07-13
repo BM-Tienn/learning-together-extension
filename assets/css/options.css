@@ -76,6 +76,10 @@ body {
     padding: 24px;
 }
 
+.card-body {
+    padding-top: 16px;
+}
+
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -146,4 +150,68 @@ body {
 .word-actions .action-btn:hover {
     background-color: #e5e7eb;
     color: var(--text-primary);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 24px;
+}
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.form-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+.form-description a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.form-description a:hover {
+    text-decoration: underline;
+}
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 14px;
+    box-sizing: border-box;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #4338ca;
+}
+.save-status {
+    font-size: 14px;
+    color: #16a34a;
 }

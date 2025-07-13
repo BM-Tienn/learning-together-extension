@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Load data for tabs
     loadSavedWords();
     loadLookupHistory();
+    loadSettings();
+
+    // Setup UI event listeners
     setupTabs();
-    document.getElementById('clear-history-btn').addEventListener('click', () => {
-        chrome.runtime.sendMessage({ action: 'clearLookupHistory' }, () => {
-            document.getElementById('history-list').innerHTML = `<p class="empty-state">Lịch sử tra cứu đã được xóa.</p>`;
-        });
-    });
+    setupButtonListeners();
 });
 
 function setupTabs() {
@@ -23,6 +23,24 @@ function setupTabs() {
         });
     });
 }
+
+function setupButtonListeners() {
+    document.getElementById('clear-history-btn').addEventListener('click', () => {
+        chrome.runtime.sendMessage({ action: 'clearLookupHistory' }, () => {
+            document.getElementById('history-list').innerHTML = `<p class="empty-state">Lịch sử tra cứu đã được xóa.</p>`;
+        });
+    });
+
+    document.getElementById('save-settings-btn').addEventListener('click', () => {
+        const apiKey = document.getElementById('api-key-input').value;
+        chrome.storage.local.set({ apiKey: apiKey }, () => {
+            const status = document.getElementById('save-status');
+            status.textContent = 'Đã lưu!';
+            setTimeout(() => { status.textContent = ''; }, 2000);
+        });
+    });
+}
+
 
 function renderList(containerId, items, type) {
     const listContainer = document.getElementById(containerId);
@@ -57,6 +75,14 @@ function loadSavedWords() {
 function loadLookupHistory() {
     chrome.runtime.sendMessage({ action: 'getLookupHistory' }, (history) => {
         if (!chrome.runtime.lastError) renderList('history-list', history, 'history');
+    });
+}
+
+function loadSettings() {
+    chrome.storage.local.get('apiKey', (data) => {
+        if (data.apiKey) {
+            document.getElementById('api-key-input').value = data.apiKey;
+        }
     });
 }
 

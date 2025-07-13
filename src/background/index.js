@@ -1,9 +1,38 @@
+// --- CACHE IMPLEMENTATION ---
+class CacheManager {
+    constructor() {
+        this.cache = new Map();
+        this.maxSize = 100; // Max 100 items in cache
+    }
+
+    async get(key) {
+        const cached = this.cache.get(key);
+        // Cache valid for 1 hour
+        if (cached && Date.now() - cached.timestamp < 3600000) {
+            return cached.data;
+        }
+        this.cache.delete(key); // Delete expired or non-existent
+        return null;
+    }
+
+    set(key, data) {
+        if (this.cache.size >= this.maxSize) {
+            // Evict the oldest item
+            const firstKey = this.cache.keys().next().value;
+            this.cache.delete(firstKey);
+        }
+        this.cache.set(key, { data, timestamp: Date.now() });
+    }
+}
+const apiCache = new CacheManager();
+
 
 // --- INITIALIZATION ---
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({ 
         savedWords: [],
-        lookupHistory: [] 
+        lookupHistory: [],
+        apiKey: '' // Initialize API key
     });
     chrome.contextMenus.create({
         id: "smart-lookup-pro",
@@ -13,12 +42,6 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 // --- EVENT LISTENERS ---
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === "smart-lookup-pro" && info.selectionText) {
-        chrome.tabs.sendMessage(tab.id, { action: 'showPopupFromContextMenu', text: info.selectionText });
-    }
-});
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
         case 'smartLookup':
@@ -53,22 +76,53 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             });
             break;
     }
-    return true;
+    return true; // Indicates an asynchronous response
 });
 
 // --- CORE LOGIC ---
 async function handleSmartLookup(text) {
+    // 1. Check cache first
+    const cachedResult = await apiCache.get(text);
+    if (cachedResult) {
+        // We need to check if the word is saved in real-time
+        cachedResult.isSaved = await isWordSaved(text);
+        return cachedResult;
+    }
+
+    // 2. If not in cache, proceed with API calls
     await saveToHistory(text);
     const wordCount = text.trim().split(/\s+/).length;
     const isSaved = await isWordSaved(text);
     let result = (wordCount === 1) ? await getDefinition(text) : await getTranslation(text);
-    if (result.success) result.isSaved = isSaved;
+    
+    // 3. Save to cache on success
+    if (result.success) {
+        result.isSaved = isSaved;
+        apiCache.set(text, result);
+    }
     return result;
+}
+
+// --- API KEY & STORAGE HELPERS ---
+async function getApiKey() {
+    const data = await chrome.storage.local.get('apiKey');
+    return data.apiKey;
+}
+
+async function getFromStorage(key) {
+    const result = await chrome.storage.local.get(key);
+    return result[key] || [];
 }
 
 // --- AI & OCR ---
 async function handleAiAnalysis(text) {
-    const apiKey = "";
+    const apiKey = await getApiKey();
+    if (!apiKey) {
+        console.error("Lỗi AI Analysis: API Key chưa được cung cấp.");
+        return { success: false, error: "Vui lòng nhập API Key trong trang Cài đặt." };
+    }
+    
+    console.log("Bắt đầu phân tích AI cho:", text);
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
     const prompt = `Analyze the English word or phrase: "${text}". Provide a concise analysis in Vietnamese. Return ONLY a valid JSON object with this exact structure: {"explanation": "string", "synonyms": ["string"], "antonyms": ["string"], "examples": [{"en": "string", "vi": "string"}]}. If a field is not applicable, return an empty array [] or empty string.`;
 
@@ -78,17 +132,51 @@ async function handleAiAnalysis(text) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
         });
-        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+        if (!response.ok) {
+            const errorBody = await response.text();
+            console.error("Lỗi API khi phân tích AI:", response.status, errorBody);
+            throw new Error(`API Error: ${response.status}`);
+        }
         const result = await response.json();
-        const jsonText = result.candidates[0].content.parts[0].text;
-        return { success: true, data: JSON.parse(jsonText) };
+        
+        if (result.candidates && result.candidates.length > 0 &&
+            result.candidates[0].content && result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0) {
+            
+            let jsonText = result.candidates[0].content.parts[0].text;
+            
+            // **FIX**: Clean the string to remove Markdown fences before parsing.
+            if (jsonText.startsWith("```json")) {
+                jsonText = jsonText.substring(7, jsonText.length - 3).trim();
+            }
+
+            try {
+                // Attempt to parse the cleaned JSON response from the AI
+                const data = JSON.parse(jsonText);
+                console.log("Phân tích AI thành công.");
+                return { success: true, data: data };
+            } catch (parseError) {
+                console.error("Lỗi phân tích JSON từ AI:", parseError, "Raw text:", jsonText);
+                return { success: false, error: "Phản hồi từ AI không phải là định dạng JSON hợp lệ." };
+            }
+        } else {
+            console.error("Phản hồi từ API AI có cấu trúc không mong đợi:", result);
+            throw new Error("Invalid API response structure");
+        }
     } catch (error) {
-        return { success: false, error: "Phân tích AI không thành công." };
+        console.error("Lỗi chi tiết trong hàm handleAiAnalysis:", error);
+        return { success: false, error: "Phân tích AI không thành công. Kiểm tra lại API Key hoặc thử lại sau." };
     }
 }
 
 async function handleImageTranslation(imageData) {
-    const apiKey = "";
+    const apiKey = await getApiKey();
+    if (!apiKey) {
+        console.error("Lỗi Dịch ảnh: API Key chưa được cung cấp.");
+        return { success: false, error: "Vui lòng nhập API Key trong trang Cài đặt." };
+    }
+    
+    console.log("Bắt đầu dịch ảnh...");
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
     const prompt = "Read all the text in this image and translate it to Vietnamese. Provide only the translated text, nothing else.";
 
@@ -96,7 +184,7 @@ async function handleImageTranslation(imageData) {
         contents: [{
             parts: [
                 { text: prompt },
-                { inline_data: { mime_type: "image/png", data: imageData.split(',')[1] } }
+                { inlineData: { mime_type: "image/png", data: imageData.split(',')[1] } }
             ]
         }]
     };
@@ -107,12 +195,27 @@ async function handleImageTranslation(imageData) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
-        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+        if (!response.ok) {
+            const errorBody = await response.text();
+            console.error("Lỗi API khi dịch ảnh:", response.status, errorBody);
+            throw new Error(`API Error: ${response.status}`);
+        }
         const result = await response.json();
-        const translatedText = result.candidates[0].content.parts[0].text;
-        return { success: true, text: translatedText };
+
+        if (result.candidates && result.candidates.length > 0 &&
+            result.candidates[0].content && result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0) {
+            
+            const translatedText = result.candidates[0].content.parts[0].text;
+            console.log("Dịch ảnh thành công.");
+            return { success: true, text: translatedText };
+        } else {
+            console.error("Phản hồi từ API dịch ảnh có cấu trúc không mong đợi:", result);
+            throw new Error("Invalid API response structure");
+        }
     } catch (error) {
-        return { success: false, error: "Không thể dịch ảnh." };
+        console.error("Lỗi chi tiết trong hàm handleImageTranslation:", error);
+        return { success: false, error: "Không thể dịch ảnh. Kiểm tra lại API Key hoặc thử lại sau." };
     }
 }
 
@@ -150,10 +253,6 @@ async function getTranslation(text) {
 }
 
 // --- STORAGE MANAGEMENT ---
-async function getFromStorage(key) {
-    const result = await chrome.storage.local.get(key);
-    return result[key] || [];
-}
 async function saveToHistory(text) {
     let history = await getFromStorage('lookupHistory');
     const lowerCaseText = text.toLowerCase();

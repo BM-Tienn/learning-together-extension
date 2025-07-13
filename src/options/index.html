@@ -16,6 +16,7 @@
         <div class="tabs">
             <button class="tab-link active" data-tab="saved-words">⭐ Từ đã lưu</button>
             <button class="tab-link" data-tab="history">🕒 Lịch sử</button>
+            <button class="tab-link" data-tab="settings">⚙️ Cài đặt</button>
         </div>
 
         <main class="content-wrapper">
@@ -38,6 +39,27 @@
                     </div>
                     <div id="history-list" class="data-list">
                          <!-- History will be injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="settings" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Cài đặt API</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="api-key-input">Gemini API Key</label>
+                            <p class="form-description">
+                                Để sử dụng tính năng phân tích AI và dịch ảnh, bạn cần cung cấp API key của riêng mình. Bạn có thể lấy key tại <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.
+                            </p>
+                            <input type="password" id="api-key-input" class="form-input" placeholder="Nhập API Key của bạn tại đây">
+                        </div>
+                        <div class="form-actions">
+                            <button id="save-settings-btn" class="btn btn-primary">Lưu thay đổi</button>
+                            <span id="save-status" class="save-status"></span>
+                        </div>
                     </div>
                 </div>
             </section>

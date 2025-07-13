@@ -1,135 +1,231 @@
 # English Language Assistant - Chrome Extension
 
-Một extension Chrome mạnh mẽ để hỗ trợ học tiếng Anh trên web với các tính năng dịch, phân tích ngữ nghĩa, phát âm và tra cứu từ điển.
+Một extension Chrome mạnh mẽ để hỗ trợ học tiếng Anh trên web với các tính năng dịch thông minh, phân tích AI, OCR và quản lý từ vựng.
 
 ## 🌟 Tính năng chính
 
-### 📖 Dịch thuật
-- Dịch từ tiếng Anh sang tiếng Việt
-- Hỗ trợ dịch cả từ đơn và cụm từ
-- Sử dụng API MyMemory miễn phí
+### 🔍 Tra cứu thông minh
+- **Tự động nhận diện**: Tự động phân biệt từ đơn và cụm từ
+- **Cache thông minh**: Lưu cache kết quả tra cứu để tăng tốc độ
+- **Context Menu**: Click chuột phải để tra cứu nhanh
+- **Popup thông minh**: Hiển thị kết quả ngay khi chọn text
 
-### 📚 Từ điển
-- Tra cứu định nghĩa từ tiếng Anh
-- Hiển thị phiên âm (phonetics)
-- Cung cấp các nghĩa khác nhau của từ
-- Sử dụng API Dictionary.dev miễn phí
+### 📖 Dịch thuật đa năng
+- **Dịch từ điển**: Tra cứu định nghĩa chi tiết với phiên âm
+- **Dịch văn bản**: Dịch cụm từ và câu dài
+- **Dịch ảnh (OCR)**: Chọn vùng ảnh để dịch text trong ảnh
+- **Dịch trang web**: Mở Google Translate cho toàn bộ trang
 
-### 🔍 Phân tích ngữ nghĩa
-- Phân tích loại từ (danh từ, động từ, tính từ...)
-- Đánh giá độ phức tạp của từ
-- Phân tích mức độ phổ biến
-- Thông tin ngữ pháp cơ bản
+### 🤖 Phân tích AI (Gemini)
+- **Phân tích ngữ nghĩa**: Giải thích chi tiết ý nghĩa từ
+- **Từ đồng nghĩa**: Liệt kê các từ có nghĩa tương tự
+- **Từ trái nghĩa**: Hiển thị các từ có nghĩa đối lập
+- **Ví dụ sử dụng**: Cung cấp ví dụ Anh-Việt
 
 ### 🔊 Phát âm
-- Hỗ trợ nhiều giọng đọc khác nhau:
-  - 🇺🇸 Tiếng Anh (Mỹ) - en-US
-  - 🇬🇧 Tiếng Anh (Anh) - en-GB
-  - 🇦🇺 Tiếng Anh (Úc) - en-AU
-  - 🇨🇦 Tiếng Anh (Canada) - en-CA
-- Điều chỉnh tốc độ đọc (chậm, bình thường, nhanh)
-- Sử dụng Chrome TTS API
+- **Text-to-Speech**: Phát âm với giọng Anh-Mỹ tự nhiên
+- **Tốc độ điều chỉnh**: Hỗ trợ điều chỉnh tốc độ đọc
+- **Tích hợp sẵn**: Sử dụng Chrome TTS API
+
+### 💾 Quản lý từ vựng
+- **Lưu từ yêu thích**: Đánh dấu sao để lưu từ quan trọng
+- **Lịch sử tra cứu**: Theo dõi 50 từ tra cứu gần nhất
+- **Quản lý dữ liệu**: Xem, xóa và phát âm từ đã lưu
 
 ## 🚀 Cách sử dụng
 
-1. **Cài đặt extension**
-   - Mở Chrome và vào `chrome://extensions/`
-   - Bật "Developer mode"
-   - Click "Load unpacked" và chọn thư mục chứa extension
+### 1. Cài đặt extension
+```bash
+# Clone repository
+git clone [repository-url]
+cd english-language-assistant
 
-2. **Sử dụng trên web**
-   - Bôi đen bất kỳ từ hoặc cụm từ tiếng Anh nào trên trang web
-   - Icon extension sẽ xuất hiện
-   - Click vào icon để mở popup với các tùy chọn
-
-3. **Các tab chức năng**
-   - **Dịch**: Dịch từ tiếng Anh sang tiếng Việt
-   - **Từ điển**: Tra cứu định nghĩa và phiên âm
-   - **Phân tích**: Phân tích ngữ nghĩa và ngữ pháp
-   - **Phát âm**: Nghe phát âm với nhiều giọng đọc
-
-## 🛠️ Cài đặt và phát triển
-
-### Yêu cầu hệ thống
-- Google Chrome (phiên bản 88+)
-- Kết nối internet để sử dụng các API
-
-### Cấu trúc dự án
-```
-extension/
-├── manifest.json          # Cấu hình extension
-├── background.js          # Service worker
-├── content.js            # Content script chính
-├── style.css             # CSS styles
-├── images/               # Icons và assets
-│   ├── icon16.svg
-│   ├── icon48.svg
-│   └── icon128.svg
-└── README.MD            # Hướng dẫn này
+# Mở Chrome và vào chrome://extensions/
+# Bật "Developer mode"
+# Click "Load unpacked" và chọn thư mục dự án
 ```
 
-### APIs được sử dụng
-- **MyMemory Translation API**: Dịch thuật miễn phí
-- **Dictionary.dev API**: Từ điển tiếng Anh
-- **Chrome TTS API**: Phát âm văn bản
+### 2. Cấu hình API (Tùy chọn)
+- Mở extension popup → Click "Cài đặt & Dữ liệu"
+- Tab "Cài đặt" → Nhập Gemini API Key
+- Lấy API key tại: https://aistudio.google.com/app/apikey
 
-## 🎨 Thiết kế
+### 3. Sử dụng trên web
+- **Chọn text**: Bôi đen từ/cụm từ tiếng Anh
+- **Click icon**: Icon ⭐ xuất hiện → click để tra cứu
+- **Context menu**: Chuột phải → "Tra cứu thông minh"
+- **Dịch ảnh**: Popup → "Dịch ảnh (Chọn vùng)"
 
-### Giao diện
-- Thiết kế hiện đại với gradient và blur effects
-- Hỗ trợ dark mode tự động
-- Responsive design cho mobile
-- Animations mượt mà
+## 🛠️ Cấu trúc dự án
 
-### Màu sắc chủ đạo
-- Primary: `#667eea` (Indigo)
-- Secondary: `#764ba2` (Purple)
-- Success: `#28a745` (Green)
-- Warning: `#ffc107` (Yellow)
-- Error: `#dc3545` (Red)
-
-## 🔧 Tùy chỉnh
-
-### Thêm API mới
-Để thêm API dịch thuật hoặc từ điển mới:
-
-1. Thêm host permission trong `manifest.json`:
-```json
-"host_permissions": [
-    "https://your-api-domain.com/*"
-]
+```
+english-language-assistant/
+├── manifest.json              # Cấu hình extension
+├── assets/
+│   ├── css/
+│   │   ├── style.css         # Styles cho popup chính
+│   │   └── options.css       # Styles cho trang options
+│   └── icons/
+│       ├── icon16.png        # Icon 16x16
+│       ├── icon48.png        # Icon 48x48
+│       └── icon128.png       # Icon 128x128
+├── src/
+│   ├── background/
+│   │   └── index.js          # Service worker - Logic chính
+│   ├── content/
+│   │   └── index.js          # Content script - UI popup
+│   ├── popup/
+│   │   ├── index.html        # Popup chính
+│   │   └── index.js          # Logic popup
+│   └── options/
+│       ├── index.html        # Trang cài đặt
+│       └── index.js          # Logic cài đặt
+└── README.MD                 # Hướng dẫn này
 ```
 
-2. Tạo function mới trong `content.js`:
+## 🔧 Chi tiết kỹ thuật
+
+### Background Script (`src/background/index.js`)
+- **Cache Manager**: Quản lý cache với TTL 1 giờ
+- **API Integration**: 
+  - Dictionary.dev API (từ điển)
+  - MyMemory API (dịch thuật)
+  - Gemini API (phân tích AI)
+- **Storage Management**: Quản lý từ đã lưu và lịch sử
+- **TTS Integration**: Phát âm với Chrome TTS
+
+### Content Script (`src/content/index.js`)
+- **Text Selection**: Theo dõi và xử lý text được chọn
+- **Popup UI**: Tạo và quản lý popup thông minh
+- **OCR Selection**: Chọn vùng ảnh để dịch
+- **Responsive Design**: Tự động điều chỉnh vị trí popup
+
+### Popup (`src/popup/`)
+- **Quick Actions**: Dịch ảnh, dịch trang, cài đặt
+- **Minimal UI**: Giao diện đơn giản và nhanh
+
+### Options (`src/options/`)
+- **Tab Interface**: 3 tab chính (Từ đã lưu, Lịch sử, Cài đặt)
+- **Data Management**: Xem, xóa, phát âm từ đã lưu
+- **API Configuration**: Cài đặt Gemini API Key
+
+## 🎨 Thiết kế UI/UX
+
+### Popup Chính
+- **Modern Design**: Thiết kế Material Design
+- **Smart Positioning**: Tự động điều chỉnh vị trí
+- **Loading States**: Hiển thị trạng thái đang tải
+- **Error Handling**: Xử lý lỗi thân thiện
+
+### Màu sắc
+- **Primary**: `#4f46e5` (Indigo)
+- **Background**: `#f8f9fa` (Light Gray)
+- **Text**: `#1f2937` (Dark Gray)
+- **Border**: `#e5e7eb` (Light Border)
+
+## 🔌 APIs được sử dụng
+
+### Miễn phí
+- **Dictionary.dev**: `https://api.dictionaryapi.dev/`
+- **MyMemory**: `https://api.mymemory.translated.net/`
+
+### Cần API Key
+- **Google Gemini**: `https://generativelanguage.googleapis.com/`
+  - Phân tích AI
+  - Dịch ảnh (OCR)
+
+## 📊 Tính năng nâng cao
+
+### Cache System
 ```javascript
-async function yourNewAPI(text) {
-    const response = await fetch(`https://your-api-domain.com/translate?text=${text}`);
-    return await response.json();
+// Cache với TTL 1 giờ, tối đa 100 items
+class CacheManager {
+    constructor() {
+        this.cache = new Map();
+        this.maxSize = 100;
+    }
 }
 ```
 
-### Thay đổi giao diện
-- Chỉnh sửa `style.css` để thay đổi màu sắc và layout
-- Thêm CSS variables để dễ tùy chỉnh
-- Hỗ trợ custom themes
+### Smart Text Detection
+```javascript
+// Tự động phân biệt từ đơn và cụm từ
+const wordCount = text.trim().split(/\s+/).length;
+const result = (wordCount === 1) ? 
+    await getDefinition(text) : 
+    await getTranslation(text);
+```
+
+### OCR Image Translation
+```javascript
+// Chụp màn hình và cắt vùng được chọn
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+ctx.drawImage(img, rect.left * dpr, rect.top * dpr, 
+    rect.width * dpr, rect.height * dpr, 
+    0, 0, canvas.width, canvas.height);
+```
+
+## 🚀 Performance
+
+### Tối ưu hóa
+- **Cache thông minh**: Giảm API calls
+- **Lazy loading**: Chỉ tải khi cần
+- **Debounced events**: Tránh spam API
+- **Error recovery**: Tự động fallback
+
+### Memory Management
+- **Popup cleanup**: Tự động xóa DOM elements
+- **Cache eviction**: LRU cache strategy
+- **Storage limits**: Giới hạn lịch sử 50 items
+
+## 🔒 Bảo mật
+
+### Permissions
+```json
+{
+    "permissions": [
+        "tts",           // Text-to-Speech
+        "storage",        // Local storage
+        "activeTab",      // Access current tab
+        "contextMenus",   // Right-click menu
+        "scripting"       // Execute scripts
+    ]
+}
+```
+
+### Data Privacy
+- **Local Storage**: Dữ liệu chỉ lưu local
+- **No Tracking**: Không thu thập thông tin cá nhân
+- **API Keys**: Chỉ lưu trong extension storage
+
+## 🐛 Troubleshooting
+
+### Lỗi thường gặp
+1. **API Key không hoạt động**
+   - Kiểm tra key tại https://aistudio.google.com/app/apikey
+   - Đảm bảo có quota cho Gemini API
+
+2. **Popup không hiển thị**
+   - Refresh trang web
+   - Kiểm tra console để xem lỗi
+
+3. **Dịch ảnh không hoạt động**
+   - Cần API Key hợp lệ
+   - Ảnh phải có text rõ ràng
 
 ## 📝 Changelog
 
-### Version 2.0
-- ✨ Thêm tính năng phân tích ngữ nghĩa
-- 🎨 Thiết kế UI/UX hoàn toàn mới
-- 🌙 Hỗ trợ dark mode
+### Version 1.0.0
+- ✨ Tra cứu thông minh với cache
+- 🤖 Phân tích AI với Gemini
+- 📷 Dịch ảnh (OCR)
+- 💾 Quản lý từ vựng
+- 🔊 Text-to-Speech
+- 🎨 UI/UX hiện đại
 - 📱 Responsive design
-- 🔧 Cải thiện performance
-
-### Version 1.0
-- 🚀 Tính năng dịch cơ bản
-- 🔊 Phát âm với TTS
-- 📚 Tra cứu từ điển
 
 ## 🤝 Đóng góp
-
-Chúng tôi rất hoan nghênh mọi đóng góp! Để đóng góp:
 
 1. Fork dự án
 2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
@@ -139,19 +235,16 @@ Chúng tôi rất hoan nghênh mọi đóng góp! Để đóng góp:
 
 ## 📄 License
 
-Dự án này được phân phối dưới MIT License. Xem file `LICENSE` để biết thêm chi tiết.
+MIT License - Xem file `LICENSE` để biết thêm chi tiết.
 
 ## 🙏 Cảm ơn
 
-- [MyMemory Translation API](https://mymemory.translated.net/) cho dịch vụ dịch thuật miễn phí
-- [Dictionary.dev](https://dictionaryapi.dev/) cho API từ điển
-- [Chrome Extensions](https://developer.chrome.com/docs/extensions/) cho documentation
-
-## 📞 Liên hệ
-
-Nếu có bất kỳ câu hỏi hoặc đề xuất nào, vui lòng tạo issue trên GitHub hoặc liên hệ qua email.
+- [Dictionary.dev](https://dictionaryapi.dev/) - API từ điển miễn phí
+- [MyMemory](https://mymemory.translated.net/) - API dịch thuật
+- [Google Gemini](https://aistudio.google.com/) - AI Analysis
+- [Chrome Extensions](https://developer.chrome.com/docs/extensions/) - Documentation
 
 ---
 
-**Lưu ý**: Extension này sử dụng các API miễn phí và có thể có giới hạn về số lượng request. Vui lòng sử dụng có trách nhiệm.
+**Lưu ý**: Extension sử dụng API miễn phí có giới hạn. Vui lòng sử dụng có trách nhiệm.
   
